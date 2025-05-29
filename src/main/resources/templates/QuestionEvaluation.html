@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Prep Application</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <script src="js/script.js"></script>
+</head>
+
+<body class="background">
+  <div class="container-fluid">
+    <div class="row">
+
+
+      <!-- Main Content -->
+      <div class="col-sm-10">
+        <!-- Profile Navbar -->
+        <nav class="navbar navbar-expand-lg profile-navbar">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <i class="fa-solid fa-microphone"></i>
+              InterviewPrep
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+              <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/profile"><i class="fas fa-home me-1"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/question"><i class="fas fa-question me-1"></i> Question Answered</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="feedback">
+                    <i class="fas fa-comments me-1"></i> Give Feedback
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+              </ul>
+
+              <ul class="navbar-nav">
+                <li class="nav-item ">
+                  <i class="fa-solid fa-user me-1"></i>
+                  <span class="d-none d-lg-inline" th:text="${user.name}">John Doe</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-card">
+          <div class="dashboard-header">
+            <h1 class="dashboard-title">Your Answered Questions</h1>
+            <p class="dashboard-subtitle">Review your responses and feedback</p>
+          </div>
+
+          <div class="question-list">
+            <div th:each="answer : ${answers}" class="card mb-4 question-card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge me-2" 
+                    th:text="${answer.questionId.category}">Category</span>
+                  <span class="badge bg-secondary" th:text="${answer.questionId.difficultyLevel}">Difficulty</span>
+                </div>
+                <div class="text-muted small" th:text="${#temporals.format(answer.answerDate, 'MMM d, yyyy h:mm a')}">
+                  Answered on Nov 15, 2023
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title" th:text="${answer.questionId.questionText}">Question text goes here...</h5>
+
+                <div class="answer-section mb-3 p-3 bg-light rounded">
+                  <h6>Your Answer:</h6>
+                  <p th:text="${answer.answerText}">Your answer text goes here...</p>
+                </div>
+
+                <div th:if="${answer.response != null}" class="feedback-section p-3 rounded"
+                  th:classappend="${answer.response.totalScore >= 70} ? 'bg-success bg-opacity-10' : 
+                                    (${answer.response.totalScore >= 50} ? 'bg-warning bg-opacity-10' : 'bg-danger bg-opacity-10')">
+                  <div class="d-flex justify-content-between mb-2">
+                    <h6>Feedback:</h6> 
+                    <span class="badge" th:classappend="${answer.response.totalScore >= 70} ? 'bg-success' : 
+                                         (${answer.response.totalScore >= 50} ? 'bg-warning' : 'bg-danger')"
+                      >Score: <span th:text="${answer.response.totalScore} + '%'">85%</span></span>
+                  </div>
+                  <p th:utext="${answer.response.responseText}">Detailed feedback on your answer...</p>
+                </div>
+
+                <div th:unless="${answer.response != null}" class="alert alert-info mt-3">
+                  <i class="fas fa-info-circle me-2"></i> No feedback available yet for this answer.
+                </div>
+              </div>
+
+            </div>
+
+            <div th:if="${#lists.isEmpty(answers)}" class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i> You haven't answered any questions yet.
+              <a href="/interview" class="alert-link">Start practicing now!</a>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <nav th:if="${totalPages > 1}" aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/question(page=${currentPage - 1}, category=${category})}">Previous</a>
+              </li>
+              <li th:each="page : ${#numbers.sequence(1, totalPages)}" class="page-item"
+                th:classappend="${page == currentPage} ? 'active' : ''">
+                <a class="page-link" th:href="@{/question(page=${page}, category=${category})}" th:text="${page}">1</a>
+              </li>
+              <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/question(page=${currentPage + 1}, category=${category})}">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <a href="/interview" class="text-decoration-none col-sm-1 d-none d-lg-flex flex-column sticky-top" id="interview">
+        <div class="icon"><i class="fa-solid fa-microphone"></i></div>
+        <div class="sidebar-text position-absolute top-50">Interview</div>
+      </a>
+
+      <!-- Home Side Panel -->
+      <a href="/home" class="text-decoration-none col-sm-1 d-none d-lg-flex flex-column sticky-top" id="home">
+        <div class="icon"><i class="fa-solid fa-house"></i></div>
+        <div class="sidebar-text position-absolute top-50">Home</div>
+      </a>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Simple animation for cards
+    document.addEventListener('DOMContentLoaded', function () {
+      const cards = document.querySelectorAll('.stat-card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100 * index);
+      });
+    });
+  </script>
+</body>
+
+</html>

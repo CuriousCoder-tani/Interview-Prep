@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Question - Interview Prep Application</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="background">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Main Content -->
+      <div class="col-sm-11">
+        <!-- Profile Navbar -->
+        <nav class="navbar navbar-expand-lg profile-navbar">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <i class="fa-solid fa-microphone"></i>
+              InterviewPrep
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+              <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin"><i class="fas fa-user me-1"></i> View User</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="/admin/question"><i class="fas fa-question me-1"></i> Add Question</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/feedback"><i class="fas fa-eye me-2"></i> Review Feedback</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Question Form Content -->
+        <div class="dashboard-card">
+          <div class="dashboard-header">
+            <h1 class="dashboard-title">Add New Question</h1>
+          </div>
+
+          <p class="dashboard-subtitle">Add questions to the interview question bank.</p>
+
+          <div class="row">
+            <div class="col-md-8">
+              <form th:action="@{/admin/question}" method="post">
+                <div class="mb-1 ">
+                  <label for="category" class="form-label">Category</label>
+                  <select class="form-select" id="category" name="category" required>
+                    <option value="" selected disabled>Select a category</option>
+                    <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+                  </select>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="difficulty" class="form-label">Difficulty Level</label>
+                  <select class="form-select" id="difficulty" name="difficulty" required>
+                    <option value="" selected disabled>Select difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                  </select>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="questionText" class="form-label">Question Text</label>
+                  <textarea class="form-control" id="questionText" name="questionText" rows="3" required></textarea>
+                </div>
+                
+            
+                
+                <div class="mb-3">
+                  <label for="keywords" class="form-label">Keywords (comma separated)</label>
+                  <input type="text" class="form-control" id="keywords" name="keywords" placeholder="e.g., Java, OOP, Inheritance">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Add Question</button>
+              </form>
+            </div>
+          </div>
+          
+          <!-- Existing Questions Section -->
+          <div class="mt-5">
+            <h2 class="section-title">Existing Questions</h2>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Question</th>
+                    <th>Category</th>
+                    <th>Difficulty</th>
+                    <th>Keywords</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody th:each="question : ${questions}">
+                  <tr>
+                    <td th:text="${question.questionId}"></td>
+                    <td th:text="${question.questionText}"></td>
+                    <td th:text="${question.category}"></td>
+                    <td th:text="${question.difficultyLevel}"></td>
+                    <td th:text="${question.tokens}"></td>
+                    <td>
+                      <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                      <a th:href="@{/admin/question/delete(questionId=${question.questionId})}" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i> 
+                    </a>
+                    
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Home Side Panel -->
+      <div class="col-sm-1 d-none d-lg-flex flex-column sticky-top" id="home">
+        <div class="icon"><i class="fa-solid fa-user"></i></div>
+        <div class="sidebar-text position-absolute top-50">Admin Panel</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>

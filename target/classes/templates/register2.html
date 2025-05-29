@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interview Prep - Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body class="bg-dark">
+  <div class="container">
+    <div class="row register-card overflow-hidden">
+      <div class="col-md-6 d-none d-md-block p-0">
+        <img src="/images/pic.png" alt="Registration" class="img-fluid register-image">
+      </div>
+      <div class="col-md-6 p-5">
+
+        <!-- Progress -->
+        <div class="position-relative m-4">
+          <div class="progress" role="progressbar" style="height: 1px;">
+            <div class="progress-bar" style="width: 50%;"></div>
+          </div>
+          <button type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill">1</button>
+          <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill">2</button>
+          <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill">3</button>
+        </div>
+
+        <h2 class="text-center mb-4">Step 2: Resume Info</h2>
+
+        <form method="post" action="/register/step2" enctype="multipart/form-data" class="needs-validation" novalidate>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="name" id="fullName" placeholder="Full Name" required>
+            <label for="fullName">Full Name</label>
+          </div>
+          <!-- Manual Entry Toggle -->
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="manualToggle" name="manualInput">
+            <label class="form-check-label" for="manualToggle">Enter details manually</label>
+          </div>
+
+          <!-- Manual Section (Hidden initially) -->
+          <div id="manualSection" style="display: none;">
+            
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="education" id="education" placeholder="Education">
+              <label for="education">Education</label>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" id="experienceSelect" name="experience" required>
+                  <option value="" disabled selected>Select experience</option>
+                  <option value="Fresher">Fresher</option>
+                  <option value="1 year">1 year</option>
+                  <option value="2 years">2 years</option>
+                  <option value="3 years">3 years</option>
+                  <option value="4 years">4 years</option>
+                  <option value="5 years">5 years</option>
+                  <option value="6 years">6 years</option>
+                  <option value="7 years">7 years</option>
+                  <option value="8 years">8 years</option>
+                  <option value="9 years">9 years</option>
+                  <option value="10+ years">10+ years</option>
+                </select>
+                <label for="experienceSelect">Experience</label>
+              </div>
+              
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="skills" id="skills" placeholder="Skills">
+              <label for="skills">Skills(use ',' to separate skills)</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="certifications" id="certifications" placeholder="Certifications">
+              <label for="certifications">Certifications</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="projects" id="projects" placeholder="Projects">
+              <label for="projects">Projects</label>
+            </div>
+          </div>
+
+          <!-- Upload Section (Default) -->
+          <div id="uploadSection">
+            <label class="form-label">Upload Resume (PDF only)</label>
+            <input type="file" class="form-control" name="resumeFile" accept="application/pdf">
+          </div>
+
+          <!-- Submit -->
+          <div class="d-grid mt-4">
+            <button class="btn btn-primary" type="submit">Next</button>
+          </div>
+        </form>
+
+        <p class="text-center mt-3 mb-0">Already have an account? <a href="/login">Login here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Manual/Upload Toggle Script -->
+  <script>
+    const toggle = document.getElementById("manualToggle");
+    const manualSection = document.getElementById("manualSection");
+    const uploadSection = document.getElementById("uploadSection");
+
+    toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        manualSection.style.display = "block";
+        uploadSection.style.display = "none";
+      } else {
+        manualSection.style.display = "none";
+        uploadSection.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

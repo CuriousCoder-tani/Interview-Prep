@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interview Prep - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body class="bg-dark">
+    <div class="container">
+        <div class="row register-card overflow-hidden">
+            <div class="col-md-6 d-none d-md-block p-0">
+                <img src="/images/pic.png" alt="Registration" class="img-fluid register-image">
+            </div>
+            <div class="col-md-6 p-5 text-white">
+                <div class="position-relative m-4">
+                    <h1 class="text-center">Login</h1>
+                    <form action="/submit" method="post">
+                        <div class="m-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="m-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="m-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                </div>
+                <p class="text-center mt-3 mb-0">Don't have an account? <a href="/register/step1">Register here</a></p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Prep Application</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="/css/style.css" rel="stylesheet">
+  <script src="/js/script.js"></script>
+</head>
+
+<body class="background">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Profile Panel -->
+      <a href="/profile" class="text-decoration-none col-sm-1 d-none d-lg-flex flex-column" id="profile">
+        <div class="icon"><i class="fa-solid fa-user"></i></div>
+        <div class="sidebar-text position-absolute top-50">Profile</div>
+      </a>
+
+      <!-- Main Panel -->
+      <div class="col-sm-10 main-content p-4">
+        <div class="job-position question-container p-4" th:unless="${message}" th:if="${jobPosition == null}">
+          <h2 class="text-center">Select a Job Position to Start</h2>
+          <li class="nav-item dropdown text-center">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">Choose a job position</a>
+            <ul class="dropdown-menu">
+              <li th:each="category : ${categories}">
+                <a class="dropdown-item" th:href="@{/interview/{category}(category=${category})}"
+                  th:text="${category}"></a>
+              </li>
+            </ul>
+          </li>
+        </div>
+
+        <div class="job-position question-container p-4" th:if="${message}">
+          <h2 class="text-center">Enter Resume Details</h2>
+          <a href="/profile" class="btn btn-primary text-decoration-none rounded-pill p-3" th:text="${message}"> Go to
+            Profile and upload
+            resume details</a>
+        </div>
+
+        <!-- Interview Panel -->
+        <div class="interview-panel" th:if="${jobPosition != null}">
+          <!-- Question Section -->
+          <form action="/submit-answer" method="post">
+            <input type="hidden" name="questionId" th:value="${currentquestion.questionId}" />
+            <input type="hidden" name="currentIndex" th:value="${currentIndex != null ? currentIndex : 0}" />
+            <input type="hidden" name="jobPosition" th:value="${jobPosition}" />
+            <div class="question-container p-4">
+              <div class="question-header">
+                <span class="question-tag" id="categoryTag"
+                  th:text="${currentquestion.category}">Category</span>
+                <span class="question-timer">
+                  <i class="far fa-clock me-1"></i>
+                  <span id="timer">1:45</span> remaining
+                </span>
+              </div>
+
+
+              <div class="question-text">
+                <span th:text="${index}"></span>.
+                <span id="questionText" th:text="${currentquestion.questionText}">Loading question...</span>
+              </div>
+            </div>
+
+            <!-- Response Section -->
+            <div class="response-container">
+              <div class="response-tabs">
+                <div class="response-tab active" data-tab="text"><i class="fas fa-keyboard me-2"></i>Write Answer</div>
+                <div class="response-tab" data-tab="voice"><i class="fas fa-microphone me-2"></i>Speak Answer</div>
+              </div>
+
+              <!-- Text Response -->
+              <div class="text-response-container" id="text-response">
+                <textarea class="text-response" name="userAnswer" placeholder="Type your answer here..."></textarea>
+                <div class="action-buttons mt-2">
+                  <button class="btn btn-outline" type="reset"><i class="fas fa-redo me-2"></i>Clear</button>
+                  <button class="btn btn-primary" type="submit" id="submitBtn"><i class="fas fa-check me-2"></i>Submit
+                    Answer</button>
+                </div>
+              </div>
+
+              <!-- Voice Response -->
+              <div class="voice-response-container d-none" id="voice-response">
+                <div class="voice-response">
+                  <div class="voice-indicator" id="voice-indicator">
+                    <i class="fas fa-microphone"></i>
+                  </div>
+                  <div class="voice-timer">00:00</div>
+                  <p class="text-muted">Click the microphone to start recording</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Home Panel -->
+      <a href="/home" class="text-decoration-none col-sm-1 d-none d-lg-flex flex-column" id="home">
+        <div class="icon"><i class="fa-solid fa-house"></i></div>
+        <div class="sidebar-text position-absolute top-50">Home</div>
+      </a>
+    </div>
+  </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
